@@ -3,13 +3,12 @@ language: go
 go:
  -  master
 
-before_install:
+install:
   - go get -v ./core
-
-install: true
+  - go get -v ./exec
 
 script:
-  - go test -v ./core -coverprofile=coverage.txt -covermode=atomic
+  - go test -v ./core ./exec -coverprofile=coverage.txt -covermode=atomic
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

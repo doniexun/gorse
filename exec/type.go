@@ -1,8 +1,8 @@
 package exec
 
 import (
-	"github.com/ZhangZhenghao/gorse/core"
 	"github.com/yuin/gopher-lua"
+	"github.com/zhenghaoz/gorse/core"
 )
 
 // Convert LTable to parameters

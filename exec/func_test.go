@@ -6,7 +6,7 @@ import (
 )
 
 func testExp(t *testing.T, line string, expect lua.LValue) {
-	L := NewEngine()
+	L := NewExecutor()
 	defer L.Close()
 	// Execute
 	if err := L.DoString("out = " + line); err != nil {
