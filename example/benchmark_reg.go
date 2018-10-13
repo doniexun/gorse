@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/ZhangZhenghao/gorse/core"
+	"github.com/zhenghaoz/gorse/core"
 	"gonum.org/v1/gonum/stat"
 	"os"
 	"runtime"
@@ -12,19 +12,14 @@ import (
 type Model struct {
 	name      string
 	doc       string
-	estimator core.Estimator
+	estimator core.Model
 }
 
 const goDoc = "https://goDoc.org/github.com/ZhangZhenghao/gorse/core"
 
-func main() {
-	// Parse arguments
-	dataSet := "ml-100k"
-	if len(os.Args) > 1 {
-		dataSet = os.Args[1]
-	}
+func benchmark(dataSet string) {
 	// Cross validation
-	estimators := []Model{
+	models := []Model{
 		{"SVD", "#SVD", core.NewSVD(nil)},
 		{"SVD++", "#SVDpp", core.NewSVDpp(nil)},
 		{"NMF[3]", "#NMF", core.NewNMF(nil)},
@@ -41,7 +36,7 @@ func main() {
 	var start time.Time
 	fmt.Printf("| %s | RMSE | MAE | Time |\n", dataSet)
 	fmt.Println("| - | - | - | - |")
-	for _, model := range estimators {
+	for _, model := range models {
 		start = time.Now()
 		out := core.CrossValidate(model.estimator, set, []core.Evaluator{core.RMSE, core.MAE},
 			core.NewKFoldSplitter(5), 0, core.Parameters{
@@ -54,4 +49,12 @@ func main() {
 			stat.Mean(out[1].Tests, nil),
 			int(tm.Hours()), int(tm.Minutes())%60, int(tm.Seconds())%60)
 	}
+}
+
+func main() {
+	dataSet := "ml-100k"
+	if len(os.Args) > 1 {
+		dataSet = os.Args[1]
+	}
+	benchmark(dataSet)
 }

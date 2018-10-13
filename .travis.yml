@@ -1,13 +1,15 @@
 language: go
 
 go:
- - "1.10.2"
+ -  master
 
 before_install:
-  - go get -t -v ./...
+  - go get -v ./core
+
+install: true
 
 script:
-  - go test -v ./... -coverprofile=coverage.txt -covermode=atomic
+  - go test -v ./core -coverprofile=coverage.txt -covermode=atomic
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
